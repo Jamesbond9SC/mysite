@@ -8,8 +8,8 @@ app = Flask(__name__)
 # Defining the hello world test function
 @app.route("/")
 def main_page():
-	return render_template("main_page.html")
+	return render_template("index.html")
 
 # Testing on localhost
-#if __name__ == "__main__":
-#	app.run(host="0.0.0.0")
+if __name__ == "__main__":
+	app.run(host="0.0.0.0")
