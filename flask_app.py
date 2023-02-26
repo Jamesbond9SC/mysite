@@ -4,6 +4,7 @@ from flask import Flask
 from flask import render_template
 from flask import send_from_directory
 from flask import request
+from flask import redirect
 
 # Initialising the app
 app = Flask(__name__)
@@ -22,6 +23,15 @@ def main_page():
 @app.route("/albums")
 def albums_page():
 	return render_template("albums.html")
+@app.route("/albums/current")
+def albums_current():
+	cjpgs = os.listdir(os.path.join(app.root_path, "static/media/Current/pictures/jpg"))
+	cjpegs = os.listdir(os.path.join(app.root_path, "static/media/Current/pictures/jpeg"))
+	return render_template("albums_current.html", cjpgs=cjpgs, cjpegs=cjpegs)
+@app.route("/albums/past")
+def albums_past():
+	pjpgs = os.listdir(os.path.join(app.root_path, "static/media/Past/pictures/jpg"))
+	return render_template("albums_past.html", pjpgs=pjpgs)
 
 # The blog page
 @app.route("/blog")
@@ -36,7 +46,12 @@ def about_page():
 # The author page (Whole class stuff)
 @app.route("/author")
 def author_page():
-	return render_template("author.html")
+	quotes = []
+	quotesfob = open(os.path.join(app.root_path, "static") + "/quotes.txt", "r")
+	lines = quotesfob.read().splitlines()
+	for line in lines:
+		quotes.append(line.split("{diff}"))
+	return render_template("author.html", quotes=quotes)
 
 # The credits page
 @app.route("/credits")
